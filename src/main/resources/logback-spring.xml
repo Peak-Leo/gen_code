@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<conversionRule conversionWord="wEx"
+					converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+	<!-- 将Maven pom.xml的属性应用到logback中来, 需要在pom.xml中指定build resources -->
+	<property scope="system" name="SYSTEM_NAME" value="gen_code" />
+	<property scope="system" name="LOG_DIR" value="/apps/logs" />
+	<appender name="ROOT_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/system.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/system.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}]) %-5level - %logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_ROOT_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>512</queueSize>
+		<appender-ref ref="ROOT_APPENDER" />
+	</appender>
+
+	<appender name="logstash"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/logstash.json</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/logstash.%d{yyyy-MM-dd}.%i.json
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- 这里配置需要额外输出的MDC项 -->
+            <includeMdcKeyName>traceId</includeMdcKeyName>
+            <!-- 一定要在type字段输出应用编码，否则采集时，会丢弃日志！！！！！！！！！ -->
+            <customFields>{"type":"gen_code"}</customFields>
+        </encoder>
+	</appender>
+	<appender name="ROOT_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread][%red(%X{traceId})] %boldMagenta(%-5level) %cyan(%logger{36}) - %msg%n%wEx</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="IDENTITY_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/identity.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/identity.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}]) %-5level -
+				%logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="SMS_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/sms.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/sms.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}]) %-5level -
+				%logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="SSO_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/sso.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/sso.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}]) %-5level -
+				%logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="jvm"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/jvm.json</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/jvm.json.%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>1</maxHistory>
+			<totalSizeCap>1GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	</appender>
+
+
+
+	<!-- 屏蔽 dubbo配置日志-->
+	<logger name="com.alibaba.dubbo" level="ERROR"/>
+	<!-- 屏蔽 dozer配置日志-->
+	<logger name="org.dozer" level="ERROR"/>
+
+<!--    &lt;!&ndash; 屏蔽Apache 的Debug日志 &ndash;&gt;-->
+<!--	<logger name="org.apache" level="ERROR" />-->
+
+<!--	&lt;!&ndash; 屏蔽org的INFO日志 &ndash;&gt;-->
+	<logger name="org" level="ERROR"/>
+
+	<root level="DEBUG">
+		<appender-ref ref="ASYNC_ROOT_APPENDER" />
+		<appender-ref ref="ROOT_STDOUT" />
+		<appender-ref ref="logstash" />
+	</root>
+	<!-- <logger name="org.apache" level="INFO" /> <logger name="org.apache.http.wire" 
+		level="INFO" /> -->
+</configuration>

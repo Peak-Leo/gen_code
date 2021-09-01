@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leo.gen.code.dao.TemplateGroupDao">
+
+	<insert id="insertTemplateGroup" parameterType="com.leo.gen.code.entity.TemplateGroupEntity">
+		insert into t_template_group
+		(
+			group_name,
+			module_name,
+			author,
+			table_prefix,
+			main_package,
+			data_status,
+			create_time,
+			update_time
+		)
+		values
+		(
+			#{groupName},
+			#{moduleName},
+			#{author},
+			#{tablePrefix},
+			#{mainPackage},
+			#{dataStatus},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+
+	<update id="updateTemplateGroupById" parameterType="com.leo.gen.code.entity.TemplateGroupEntity">
+		update t_template_group
+		<trim prefix="set" suffixOverrides=",">
+			<if test="groupName != null and groupName != ''">
+				group_name = #{groupName},
+			</if>
+			<if test="moduleName != null and moduleName != ''">
+				module_name = #{moduleName},
+			</if>
+			<if test="author != null and author != ''">
+				author = #{author},
+			</if>
+			<if test="tablePrefix != null and tablePrefix != ''">
+				table_prefix = #{tablePrefix},
+			</if>
+			<if test="mainPackage != null and mainPackage != ''">
+				main_package = #{mainPackage},
+			</if>
+			<if test="dataStatus != null">
+				data_status = #{dataStatus},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteTemplateGroupById" parameterType="Object">
+        delete from t_template_group where id= #{id}
+	</delete>
+
+	<select id="selectAllTemplateGroupName" resultType="com.leo.gen.code.entity.TemplateGroupEntity">
+		select
+			id id,
+			group_name groupName
+		from t_template_group
+		order by id asc
+	</select>
+
+    <select id="selectOneById" parameterType="Object" resultType="com.leo.gen.code.entity.TemplateGroupEntity">
+		select
+		id id,
+		group_name groupName,
+		module_name moduleName,
+		author author,
+		table_prefix tablePrefix,
+		main_package mainPackage,
+		data_status dataStatus,
+		create_time createTime,
+		update_time updateTime
+		from t_template_group
+		where id = #{id}
+	</select>
+
+    <select id="selectTemplateGroupByIdList" parameterType="list" resultType="com.leo.gen.code.entity.TemplateGroupEntity">
+		select
+		<include refid="base"/>
+		from t_template_group
+		where id in
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+    <select id="queryTemplateGroupList" parameterType="com.leo.gen.code.entity.QueryGroupEntity" resultType="com.leo.gen.code.entity.TemplateGroupEntity">
+		select
+		<include refid="base"/>
+		from t_template_group
+		<where>
+			<if test="groupName != null and groupName != ''">
+				group_name = #{groupName}
+			</if>
+		</where>
+	</select>
+
+	<sql id="base">
+		id id,
+		group_name groupName,
+		module_name moduleName,
+		author author,
+		table_prefix tablePrefix,
+		main_package mainPackage,
+		data_status dataStatus,
+		create_time createTime,
+		update_time updateTime
+	</sql>
+</mapper>

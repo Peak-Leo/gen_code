@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<property scope="system" name="SYSTEM_NAME" value="gen_code" />
+	<property scope="system" name="LOG_DIR" value="/apps/logs" />
+
+	<appender name="ROOT_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${SYSTEM_NAME}/system.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/${SYSTEM_NAME}/system.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}]) %-5level - %logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 调试日志 -->
+	<appender name="STDOUT"
+			  class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+	<root level="DEBUG">
+		<appender-ref ref="ROOT_APPENDER" />
+	</root>
+</configuration>

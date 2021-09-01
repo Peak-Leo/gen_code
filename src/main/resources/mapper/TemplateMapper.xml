@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leo.gen.code.dao.TemplateDao">
+
+    <insert id="insertTemplate" parameterType="com.leo.gen.code.entity.TemplateEntity">
+		insert into t_template
+		(
+			group_id,
+			template_name,
+			context,
+			template_type,
+			package_path,
+			module_name,
+			file_name,
+			data_status,
+			create_time,
+			update_time
+		)
+		values
+		(
+			#{groupId},
+			#{templateName},
+			#{context},
+			#{templateType},
+			#{packagePath},
+			#{moduleName},
+			#{fileName},
+			#{dataStatus},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+
+    <update id="updateTemplateById" parameterType="com.leo.gen.code.entity.TemplateEntity">
+        update t_template
+        <trim prefix="set" suffixOverrides=",">
+            <if test="groupId != null and groupId != ''">
+                group_id = #{groupId},
+            </if>
+            <if test="templateName != null and templateName != ''">
+                template_name = #{templateName},
+            </if>
+            <if test="context != null and context != ''">
+                context = #{context},
+            </if>
+            <if test="templateType != null">
+                template_type = #{templateType},
+            </if>
+            <if test="packagePath != null and packagePath != ''">
+                package_path = #{packagePath},
+            </if>
+            <if test="moduleName != null and moduleName != ''">
+                module_name = #{moduleName},
+            </if>
+            <if test="fileName != null and fileName != ''">
+                file_name = #{fileName},
+            </if>
+            <if test="dataStatus != null">
+                data_status = #{dataStatus},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTemplateById" parameterType="Object">
+        delete from t_template where id= #{id}
+	</delete>
+
+    <!-- 根据groupId查询 -->
+    <select id="selectTemplateByGroupId" parameterType="Object" resultType="com.leo.gen.code.entity.TemplateEntity">
+		select
+		<include refid="base"/>
+		from t_template
+		where group_id = #{groupId}
+	</select>
+
+    <!-- 查询模板信息 -->
+    <select id="queryTemplateList" parameterType="com.leo.gen.code.entity.QueryTemplatePageEntity" resultType="com.leo.gen.code.entity.TemplateEntity">
+		select
+        <include refid="base"/>
+		from t_template
+		<where>
+			<if test="groupId != null and groupId != ''">
+				and group_id = #{groupId}
+			</if>
+			<if test="template != null and template != ''">
+				and template_name = #{template}
+			</if>
+			<if test="type != null and type != ''">
+				and template_type = #{type}
+			</if>
+		</where>
+		order by id asc
+    </select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectOneById" parameterType="Object" resultType="com.leo.gen.code.entity.TemplateEntity">
+		select
+		<include refid="base"/>
+		from t_template
+		where id = #{id}
+	</select>
+
+	<sql id="base">
+		id id,
+		group_id groupId,
+		template_name templateName,
+		context context,
+		template_type templateType,
+		package_path packagePath,
+		module_name moduleName,
+		file_name fileName,
+		data_status dataStatus,
+		create_time createTime,
+		update_time updateTime
+    </sql>
+</mapper>

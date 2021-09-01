@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leo.gen.code.dao.DataSourceDao">
+
+	<insert id="insertDataSource" parameterType="com.leo.gen.code.entity.DataSourceEntity">
+		insert into t_data_source
+		(
+			data_source_name,
+			driver_class_name,
+			url,
+			db_name,
+			user_name,
+			user_password,
+			data_status,
+			create_time,
+			update_time
+		)
+		values
+		(
+			#{dataSourceName},
+			#{driverClassName},
+			#{url},
+			#{dbName},
+			#{userName},
+			#{userPassword},
+			#{dataStatus},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+
+	<delete id="deleteDataSourceById" parameterType="Object">
+        delete from t_data_source where id= #{id}
+	</delete>
+
+	<update id="updateDataSourceById" parameterType="com.leo.gen.code.entity.DataSourceEntity">
+		update t_data_source
+		<trim prefix="set" suffixOverrides=",">
+			<if test="dataSourceName != null and dataSourceName != ''">
+				data_source_name = #{dataSourceName},
+			</if>
+			<if test="driverClassName != null and driverClassName != ''">
+				driver_class_name = #{driverClassName},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url},
+			</if>
+			<if test="dbName != null and dbName != ''">
+				db_name = #{dbName},
+			</if>
+			<if test="userName != null and userName != ''">
+				user_name = #{userName},
+			</if>
+			<if test="userPassword != null and userPassword != ''">
+				user_password = #{userPassword},
+			</if>
+			<if test="dataStatus != null">
+				data_status = #{dataStatus},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<!-- 查询所有数据源 -->
+	<select id="selectAllDataSourceName" resultType="com.leo.gen.code.entity.DataSourceEntity">
+		select
+			id id,
+			data_source_name dataSourceName
+		from t_data_source
+		order by id asc
+	</select>
+
+	<!-- 根据id查询配置信息 -->
+    <select id="selectOneById" parameterType="Object" resultType="com.leo.gen.code.entity.DataSourceEntity">
+		select
+		<include refid="base"/>
+		from t_data_source
+		where id = #{id}
+	</select>
+
+	<!-- 查询数据源配置信息 -->
+	<select id="queryDataSourceList" parameterType="com.leo.gen.code.entity.QueryDataSourceEntity" resultType="com.leo.gen.code.entity.DataSourceEntity">
+		select
+		<include refid="base"/>
+		from t_data_source
+		<where>
+			<if test="dataSourceName != null and dataSourceName != ''">
+				data_source_name = #{dataSourceName}
+			</if>
+		</where>
+		order by id asc
+	</select>
+
+	<sql id = "base">
+		id id,
+		data_source_name dataSourceName,
+		driver_class_name driverClassName,
+		url url,
+		db_name dbName,
+		user_name userName,
+		user_password userPassword,
+		data_status dataStatus,
+		create_time createTime,
+		update_time updateTime
+	</sql>
+</mapper>

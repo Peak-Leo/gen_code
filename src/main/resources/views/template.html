@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <title>代码生成器</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="libs/jquery.min.js"></script>
+    <script src="plugins/layer/layer.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+    <script src="libs/vue.min.js"></script>
+    <script src="plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="js/common.js"></script>
+</head>
+<body>
+<div id="rrapp">
+    <div class="grid-btn">
+        <div class="form-group col-sm-2">
+            <select v-model="q.groupId" class="form-control" @change="groupChange">
+                <option v-for="item in q.groupList" :value="item.id">{{item.groupName}}</option>
+            </select>
+        </div>
+        <div class="form-group col-sm-2">
+            <select v-model="q.type" class="form-control" @change="templateTypeChange">
+                <option v-for="(item, index) in q.typeList" :value="item.id">{{item.name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" v-model="q.name" @keyup.enter="query" placeholder="模板名称">
+        </div>
+        <a class="btn btn-default" @click="query">查询</a>
+
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addForm">添加</button>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="addFormLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="addFormLabel">添加模板</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td class="col-sm-2">模板组</td>
+                                <td>
+                                    <select v-model="addForm.groupId" class="form-control">
+                                        <option v-for="(item, index) in q.groupList" :value="item.id">{{item.groupName}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2">模板名称</td>
+                                <td><input type="text" class="form-control" v-model="addForm.templateName" placeholder="模板名称"></td>
+                            </tr>
+                            <tr>
+                                <td>类型</td>
+                                <td>
+                                    <select v-model="addForm.templateType" class="form-control">
+                                        <option v-for="(item, index) in typeList" :value="item.id">{{item.name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>生成包名</td>
+                                <td><input type="text" class="form-control" v-model="addForm.packagePath" placeholder="生成包名"></td>
+                            </tr>
+                            <tr>
+                                <td>文件名</td>
+                                <td><input type="text" class="form-control" v-model="addForm.fileName" placeholder="文件名"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="insert">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="editFormLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="editFormLabel">编辑模板</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td class="col-sm-2">模板组</td>
+                                <td>
+                                    <select v-model="editForm.groupId" class="form-control">
+                                        <option v-for="(item, index) in groupList" :value="item.id">{{item.groupName}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2">模板名称</td>
+                                <td><input type="text" class="form-control" v-model="editForm.templateName" placeholder="模板名称"></td>
+                            </tr>
+                            <tr>
+                                <td>类型</td>
+                                <td>
+                                    <select v-model="editForm.templateType" class="form-control">
+                                        <option v-for="(item, index) in typeList" :value="item.id">{{item.name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>生成包名</td>
+                                <td><input type="text" class="form-control" v-model="editForm.packagePath" placeholder="生成包名"></td>
+                            </tr>
+                            <tr>
+                                <td>文件名</td>
+                                <td><input type="text" class="form-control" v-model="editForm.fileName" placeholder="文件名"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="edit">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade bs-example-modal-lg" id="editContextForm" tabindex="-1" role="dialog" aria-labelledby="editContextFormLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="editContextFormLabel">编辑模板内容</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td class="col-sm-2">模板名称&nbsp;&nbsp;<a href="javascript:void(0)" tabindex="-2" data-toggle="modal" data-target="#helpForm"><img src="help.png"></a></td>
+                                <td><input type="text" class="form-control" v-model="editContextForm.templateName" readonly placeholder="模板名称"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><textarea class="form-control" v-model="editContextForm.context" placeholder="内容" rows="25"></textarea>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="editContext">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade bs-example-modal-lg" id="helpForm" tabindex="-1" role="dialog" aria-labelledby="helpFormFormLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="helpFormFormLabel">帮助信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">示例表</div>
+                            <div style="padding: 5px 0 10px 5px;">
+                                CREATE TABLE `t_demo_info` (<br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;`id` BIGINT (20) NOT NULL AUTO_INCREMENT COMMENT '主键',<br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;`demo_name` VARCHAR (50) NOT NULL DEFAULT '' COMMENT '示例名称',<br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;`demo_value` VARCHAR (50) NOT NULL DEFAULT '' COMMENT '示例值',<br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;PRIMARY KEY (`id`)<br/>
+                                ) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT = '示例信息表';
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td class="col-sm-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">模板组配置</div>
+                                        <div style="padding: 5px 0 10px 5px;">
+                                            <ul>
+                                                <li>模板组名称：<span style="color: red;">demo_group</span></li>
+                                                <li>模块名：<span style="color: red;">generator</span></li>
+                                                <li>作者：<span style="color: red;"></span></li>
+                                                <li>表前缀：<span style="color: red;">t_</span></li>
+                                                <li>主包名：<span style="color: red;">com.hwy</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">模板配置</div>
+                                        <div style="padding: 5px 0 10px 5px;">
+                                            <ul>
+                                                <li>模板组：<span style="color: red;">demo_group</span></li>
+                                                <li>模板名称：<span style="color: red;">controller</span></li>
+                                                <li>类型：<span style="color: red;">java</span></li>
+                                                <li>生成包名：<span style="color: red;">controller.${moduleName}</span></li>
+                                                <li>文件名：<span style="color: red;">${className}Controller.java</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><b>示例</b></td>
+                                <td><b>效果</b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${tableName}
+                                </td>
+                                <td>
+                                    t_demo_info
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${comments}
+                                </td>
+                                <td>
+                                    示例信息表
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>${pk.columnName}</li>
+                                        <li>${pk.comments}</li>
+                                        <li>${pk.attrName}</li>
+                                        <li>${pk.attrname}</li>
+                                        <li>${pk.attrType}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>id</li>
+                                        <li>主键</li>
+                                        <li>Id</li>
+                                        <li>id</li>
+                                        <li>Long</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${className}
+                                </td>
+                                <td>
+                                    DemoInfo
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${classname}
+                                </td>
+                                <td>
+                                    demoInfo
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${pathName}
+                                </td>
+                                <td>
+                                    demoinfo
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    注：拥有<span style="color: red;">${pk}</span>中所有的方法<br/>
+                                    #foreach($column in $columns)<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;/**<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;${column.comments}<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;*/<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;&nbsp;${column.attrType}&nbsp;&nbsp;${column.attrname};<br/>
+                                    <br/>
+                                    <br/>
+                                    ===============================<br/>
+                                    ${column.columnName}<br/>
+                                    ${column.dataType}<br/>
+                                    ${column.comments}<br/>
+                                    ${column.attrName}<br/>
+                                    ${column.attrname}<br/>
+                                    ${column.attrType}<br/>
+                                    #end
+                                </td>
+                                <td>
+                                    /**<br/>
+                                    &nbsp;&nbsp;*&nbsp;&nbsp;示例名称<br/>
+                                    &nbsp;&nbsp;*/<br/>
+                                    private String demoName;<br/>
+                                    /**<br/>
+                                    &nbsp;&nbsp;*&nbsp;&nbsp;示例值<br/>
+                                    &nbsp;&nbsp;*/<br/>
+                                    private String demoValue;
+                                    <br/>
+                                    ===============================<br/>
+                                    列名	如：user_name<br/>
+                                    列名类型	如：varchar<br/>
+                                    列名备注	如：用户姓名<br/>
+                                    属性名称(第一个字母大写)，如：user_name => UserName<br/>
+                                    属性名称(第一个字母小写)，如：user_name => userName<br/>
+                                    属性类型	如：String<br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${hasBigDecimal}
+                                </td>
+                                <td>
+                                    false
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${package}
+                                </td>
+                                <td>
+                                    com.hwy
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${author}
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${moduleName}
+                                </td>
+                                <td>
+                                    generator
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${datetime}
+                                </td>
+                                <td>
+                                    2099-12-31 23:59:59
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+    </div>
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+
+<script src="js/template.js"></script>
+</body>
+</html>
