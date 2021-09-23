@@ -33,7 +33,7 @@
                                 <li>模块名：<span style="color: red;">generator</span></li>
                                 <li>作者：<span style="color: red;"></span></li>
                                 <li>表前缀：<span style="color: red;">t_</span></li>
-                                <li>主包名：<span style="color: red;">com.hwy</span></li>
+                                <li>主包名：<span style="color: red;">com.demo</span></li>
                             </ul>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                         <li>${pk.columnName}</li>
                         <li>${pk.comments}</li>
                         <li>${pk.attrName}</li>
-                        <li>${pk.attrname}</li>
+                        <li>${pk.attrNameLow}</li>
                         <li>${pk.attrType}</li>
                     </ul>
                 </td>
@@ -106,7 +106,7 @@
             </tr>
             <tr>
                 <td>
-                    ${classname}
+                    ${classNameLow}
                 </td>
                 <td>
                     demoInfo
@@ -127,7 +127,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;/**<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;${column.comments}<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;*/<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;&nbsp;${column.attrType}&nbsp;&nbsp;${column.attrname};<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;&nbsp;${column.attrType}&nbsp;&nbsp;${column.attrNameLow};<br/>
                     <br/>
                     <br/>
                     ===============================<br/>
@@ -135,7 +135,7 @@
                     ${column.dataType}<br/>
                     ${column.comments}<br/>
                     ${column.attrName}<br/>
-                    ${column.attrname}<br/>
+                    ${column.attrNameLow}<br/>
                     ${column.attrType}<br/>
                     #end
                 </td>
@@ -171,7 +171,7 @@
                     ${package}
                 </td>
                 <td>
-                    com.leo
+                    com.demo
                 </td>
             </tr>
             <tr>

@@ -35,7 +35,7 @@ public class ColumnEntity implements Serializable {
     /**
      * 属性名称(第一个字母小写)，如：user_name => userName
      */
-    private String lowerAttrName;
+    private String attrNameLow;
 
     /**
      * 属性类型
