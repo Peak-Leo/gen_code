@@ -1,13 +1,12 @@
 package com.leo.gen.code.controller;
 
-import com.leo.gen.code.dwdb.AbstractDynamicDataSourceService;
+import com.leo.gen.code.dmds.AbstractDynamicDataSourceService;
 import com.leo.gen.code.entity.DataSourceEntity;
 import com.leo.gen.code.entity.QueryDataSourceEntity;
 import com.leo.gen.code.service.DataSourceService;
 import com.leo.gen.code.service.GeneratorService;
 import com.leo.gen.code.util.PageResult;
 import com.leo.gen.code.util.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

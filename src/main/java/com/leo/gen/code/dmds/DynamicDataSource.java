@@ -1,4 +1,4 @@
-package com.leo.gen.code.dwdb;
+package com.leo.gen.code.dmds;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

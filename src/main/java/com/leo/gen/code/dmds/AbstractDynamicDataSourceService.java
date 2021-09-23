@@ -1,4 +1,4 @@
-package com.leo.gen.code.dwdb;
+package com.leo.gen.code.dmds;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.leo.gen.code.config.db.property.DbProperty;

@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.leo.gen.code.controller.vo.DataSourceResult;
 import com.leo.gen.code.controller.vo.QueryTemplateEntity;
 import com.leo.gen.code.controller.vo.TemplateGroupResult;
-import com.leo.gen.code.dwdb.AbstractDynamicDataSourceService;
+import com.leo.gen.code.dmds.AbstractDynamicDataSourceService;
 import com.leo.gen.code.entity.*;
 import com.leo.gen.code.service.*;
 import com.leo.gen.code.util.PlaceholderUtils;

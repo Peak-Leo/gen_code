@@ -2,8 +2,8 @@ package com.leo.gen.code.config.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.leo.gen.code.config.db.property.DbProperty;
-import com.leo.gen.code.dwdb.DynamicDataSource;
-import com.leo.gen.code.dwdb.DynamicDataSourceGlobal;
+import com.leo.gen.code.dmds.DynamicDataSource;
+import com.leo.gen.code.dmds.DynamicDataSourceGlobal;
 import com.p6spy.engine.spy.P6DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

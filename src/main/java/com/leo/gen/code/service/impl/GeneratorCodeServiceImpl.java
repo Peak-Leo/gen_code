@@ -1,6 +1,6 @@
 package com.leo.gen.code.service.impl;
 
-import com.leo.gen.code.dwdb.AbstractDynamicDataSourceService;
+import com.leo.gen.code.dmds.AbstractDynamicDataSourceService;
 import com.leo.gen.code.entity.DataSourceEntity;
 import com.leo.gen.code.entity.GenCodeParam;
 import com.leo.gen.code.entity.TemplateEntity;

@@ -1,4 +1,4 @@
-package com.leo.gen.code.dwdb;
+package com.leo.gen.code.dmds;
 
 /**
  * 数据源切换控制类

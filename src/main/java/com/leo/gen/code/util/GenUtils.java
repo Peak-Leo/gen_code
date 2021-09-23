@@ -47,7 +47,7 @@ public class GenUtils {
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), group.getTablePrefix());
         tableEntity.setClassName(className);
-        tableEntity.setLowerClassName(StringUtils.uncapitalize(className));
+        tableEntity.setClassNameLow(StringUtils.uncapitalize(className));
 
         Configuration config = getConfig();
 
@@ -63,7 +63,7 @@ public class GenUtils {
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             columnEntity.setAttrName(attrName);
-            columnEntity.setLowerAttrName(StringUtils.uncapitalize(attrName));
+            columnEntity.setAttrNameLow(StringUtils.uncapitalize(attrName));
 
             //列的数据类型，转换成Java类型
             String attrType = config.getString(columnEntity.getDataType(), "unknowType");
@@ -91,8 +91,8 @@ public class GenUtils {
         map.put("comments", tableEntity.getComments());
         map.put("pk", tableEntity.getPk());
         map.put("className", tableEntity.getClassName());
-        map.put("classname", tableEntity.getLowerClassName());
-        map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
+        map.put("classname", tableEntity.getClassNameLow());
+        map.put("pathName", tableEntity.getClassNameLow().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
         map.put("mainPath", group.getMainPackage());
