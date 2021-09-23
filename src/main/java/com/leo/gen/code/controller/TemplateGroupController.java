@@ -5,7 +5,6 @@ import com.leo.gen.code.entity.TemplateGroupEntity;
 import com.leo.gen.code.service.TemplateGroupService;
 import com.leo.gen.code.util.PageResult;
 import com.leo.gen.code.util.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/group")
 public class TemplateGroupController {
 
-    @Autowired
-    private TemplateGroupService templateGroupService;
+    private final TemplateGroupService templateGroupService;
+
+    public TemplateGroupController(TemplateGroupService templateGroupService) {
+        this.templateGroupService = templateGroupService;
+    }
 
     @PostMapping("/list")
     public Result<?> queryTemplateGroupByPage(@RequestBody QueryGroupEntity queryGroupEntity) {

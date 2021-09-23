@@ -8,9 +8,9 @@ import com.leo.gen.code.entity.TemplateGroupEntity;
 import com.leo.gen.code.service.TemplateGroupService;
 import com.leo.gen.code.util.Constants;
 import com.leo.gen.code.util.PageResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Service("templateGroupService")
 public class TemplateGroupServiceImpl implements TemplateGroupService {
 
-    @Autowired
+    @Resource
     private TemplateGroupDao templateGroupDao;
 
     @Override

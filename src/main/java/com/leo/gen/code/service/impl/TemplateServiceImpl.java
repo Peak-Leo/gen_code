@@ -9,9 +9,9 @@ import com.leo.gen.code.service.TemplateService;
 import com.leo.gen.code.util.Constants;
 import com.leo.gen.code.util.PageResult;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -23,16 +23,16 @@ import java.util.List;
 @Service("templateService")
 public class TemplateServiceImpl implements TemplateService {
 
-    @Autowired
+    @Resource
     private TemplateDao templateDao;
 
     @Override
     public Integer insertTemplate(TemplateEntity templateEntity) {
         templateEntity.setDataStatus((long) Constants.DataStatus.OPEN);
-        if (StringUtils.isBlank(templateEntity.getContext())){
+        if (StringUtils.isBlank(templateEntity.getContext())) {
             templateEntity.setContext("");
         }
-        if (StringUtils.isBlank(templateEntity.getModuleName())){
+        if (StringUtils.isBlank(templateEntity.getModuleName())) {
             templateEntity.setModuleName("");
         }
         templateEntity.setCreateTime(new Date());

@@ -120,12 +120,6 @@
 	</appender>
 
 
-
-	<!-- 屏蔽 dubbo配置日志-->
-	<logger name="com.alibaba.dubbo" level="ERROR"/>
-	<!-- 屏蔽 dozer配置日志-->
-	<logger name="org.dozer" level="ERROR"/>
-
 <!--    &lt;!&ndash; 屏蔽Apache 的Debug日志 &ndash;&gt;-->
 <!--	<logger name="org.apache" level="ERROR" />-->
 

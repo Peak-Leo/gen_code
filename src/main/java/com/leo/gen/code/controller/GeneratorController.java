@@ -1,19 +1,13 @@
 package com.leo.gen.code.controller;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.leo.gen.code.controller.vo.DataSourceResult;
 import com.leo.gen.code.controller.vo.QueryTemplateEntity;
 import com.leo.gen.code.controller.vo.TemplateGroupResult;
 import com.leo.gen.code.dwdb.AbstractDynamicDataSourceService;
-import com.leo.gen.code.dwdb.DynamicDataSource;
-import com.leo.gen.code.dwdb.DynamicDataSourceGlobal;
-import com.leo.gen.code.dwdb.DynamicDataSourceHolder;
 import com.leo.gen.code.entity.*;
 import com.leo.gen.code.service.*;
-import com.leo.gen.code.util.IpAddressUtil;
-import com.leo.gen.code.util.PageResult;
 import com.leo.gen.code.util.PlaceholderUtils;
 import com.leo.gen.code.util.Result;
 import org.apache.commons.collections4.CollectionUtils;
@@ -52,9 +46,6 @@ public class GeneratorController {
 
     @Autowired
     private GeneratorService generatorService;
-
-    @Autowired
-    private DynamicDataSource dynamicDataSource;
 
     @Autowired
     private GeneratorCodeService generatorCodeService;

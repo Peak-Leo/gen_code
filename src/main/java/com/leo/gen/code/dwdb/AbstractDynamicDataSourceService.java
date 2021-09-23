@@ -1,9 +1,12 @@
 package com.leo.gen.code.dwdb;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.leo.gen.code.config.db.property.DbProperty;
 import com.leo.gen.code.entity.DataSourceEntity;
 import com.leo.gen.code.util.IpAddressUtil;
 import com.leo.gen.code.util.SpringUtil;
+
+import java.sql.SQLException;
 
 
 /**
@@ -22,12 +25,23 @@ public abstract class AbstractDynamicDataSourceService {
      * @return Object
      */
     public Object initDataSource(DataSourceEntity dataSourceEntity, Integer retryCount, Integer maxWaitMillis) {
+        DbProperty dbProperty = (DbProperty) SpringUtil.getBean("dbProperty");
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(dataSourceEntity.getDriverClassName());
         dataSource.setName(DynamicDataSourceGlobal.CUSTOM.name());
         dataSource.setUrl(IpAddressUtil.getUrl(dataSourceEntity.getUrl(), dataSourceEntity.getDbName()));
         dataSource.setUsername(dataSourceEntity.getUserName());
         dataSource.setPassword(dataSourceEntity.getUserPassword());
+        dataSource.setValidationQuery(dbProperty.getValidationQuery());
+        dataSource.setMaxActive(dbProperty.getMaxActive());
+        dataSource.setTestOnBorrow(dbProperty.isTestOnBorrow());
+        dataSource.setTestOnReturn(dbProperty.isTestOnReturn());
+        dataSource.setTestWhileIdle(dbProperty.isTestWhileIdle());
+        try {
+            dataSource.setFilters(dbProperty.getFilters());
+        } catch (SQLException ex) {
+            // 吃掉
+        }
         // 失败后重连的次数
         dataSource.setConnectionErrorRetryAttempts(retryCount == null ? 3 : retryCount);
         // 请求失败之后中断

@@ -28,11 +28,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/template")
 public class TemplateController {
 
-    @Autowired
-    private TemplateService templateService;
+    private final TemplateService templateService;
 
-    @Autowired
-    private TemplateGroupService templateGroupService;
+    private final TemplateGroupService templateGroupService;
+
+    public TemplateController(TemplateService templateService, TemplateGroupService templateGroupService) {
+        this.templateService = templateService;
+        this.templateGroupService = templateGroupService;
+    }
 
     @PostMapping("/list")
     public Result<?> queryTemplateByPage(@RequestBody QueryTemplatePageEntity queryTemplatePageEntity) {

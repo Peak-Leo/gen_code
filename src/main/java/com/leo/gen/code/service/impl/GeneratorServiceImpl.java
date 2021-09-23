@@ -8,9 +8,9 @@ import com.leo.gen.code.entity.QueryTableEntity;
 import com.leo.gen.code.entity.TableResultEntity;
 import com.leo.gen.code.service.GeneratorService;
 import com.leo.gen.code.util.PageResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Service("generatorService")
 public class GeneratorServiceImpl implements GeneratorService {
 
-    @Autowired
+    @Resource
     private GeneratorDao generatorDao;
 
     @Override

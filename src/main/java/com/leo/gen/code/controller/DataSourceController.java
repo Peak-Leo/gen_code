@@ -22,11 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(("/datasource"))
 public class DataSourceController {
 
-    @Autowired
-    private DataSourceService dataSourceService;
+    private final DataSourceService dataSourceService;
 
-    @Autowired
-    private GeneratorService generatorService;
+    private final GeneratorService generatorService;
+
+    public DataSourceController(DataSourceService dataSourceService, GeneratorService generatorService) {
+        this.dataSourceService = dataSourceService;
+        this.generatorService = generatorService;
+    }
 
     /**
      * 分页查询数据源信息

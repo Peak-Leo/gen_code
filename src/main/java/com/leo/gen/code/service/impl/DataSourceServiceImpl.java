@@ -7,9 +7,9 @@ import com.leo.gen.code.entity.DataSourceEntity;
 import com.leo.gen.code.entity.QueryDataSourceEntity;
 import com.leo.gen.code.service.DataSourceService;
 import com.leo.gen.code.util.PageResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Service("dataSourceService")
 public class DataSourceServiceImpl implements DataSourceService {
 
-    @Autowired
+    @Resource
     private DataSourceDao dataSourceDao;
 
     /**
